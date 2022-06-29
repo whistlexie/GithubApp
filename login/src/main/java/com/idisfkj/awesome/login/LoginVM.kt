@@ -7,6 +7,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.idisfkj.awesome.basic.BaseScopeVM
@@ -43,6 +44,7 @@ class LoginVM(private val appBridge: AppBridgeInterface) : BaseScopeVM() {
     val signInEnable = MutableLiveData<Boolean>(false)
     val hideSoftInput = MutableLiveData(false)
     val toPage = MutableLiveData<ToPageStatus>(PageDefault)
+    val loginState = MutableLiveData<LoginState>(LoginStateInit)
     private var mTokenJob: Job? = null
 
     override fun attach(savedInstanceState: Bundle?) {
@@ -115,6 +117,7 @@ class LoginVM(private val appBridge: AppBridgeInterface) : BaseScopeVM() {
             override fun onError(error: ResponseError) {
                 showLoading.value = false
                 Log.i(TAG, "getUser error! ResponseError:$error")
+                loginState.postValue(LoginFailed)
             }
 
         })

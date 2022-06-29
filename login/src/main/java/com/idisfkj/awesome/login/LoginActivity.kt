@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.idisfkj.awesome.basic.activity.BaseActivity
 import com.idisfkj.awesome.basic.activity.BaseBindingActivity
 import com.idisfkj.awesome.common.*
+import com.idisfkj.awesome.common.utils.showToast
 import com.idisfkj.awesome.componentbridge.app.AppBridgeInterface
 import com.idisfkj.awesome.componentbridge.provider.BridgeProviders
 import com.idisfkj.awesome.login.databinding.LoginActivityLoginBinding
@@ -55,6 +56,16 @@ class LoginActivity : BaseBindingActivity<LoginActivityLoginBinding, LoginVM>() 
                 PageDefault -> Any()
             }
         })
+        viewModel.loginState.observe(this) {
+            when (it) {
+                LoginFailed -> {
+                    showToast(getString(R.string.login_failed))
+                }
+                LoginSuccess -> {
+                    hideSoftInput()
+                }
+            }
+        }
     }
 
     private fun authorize() {
